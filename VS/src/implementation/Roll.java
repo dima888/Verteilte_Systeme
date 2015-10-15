@@ -2,6 +2,8 @@ package implementation;
 
 import java.io.Serializable;
 
+import com.google.gson.Gson;
+
 /**
  * Our Roll implementation class
  * @author foxhound
@@ -26,5 +28,11 @@ public class Roll implements Serializable {
     public int getNumber() {
     	return this.number;
     }
+
+	@Override
+	public String toString() {
+		Gson gson = new Gson();
+		return gson.toJson(this);
+	}
     
  }
