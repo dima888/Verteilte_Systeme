@@ -18,7 +18,7 @@ public class Roll implements Serializable {
      * @param number
      */
     public Roll(int number) {
-    	this.number = number;
+    	this.number = number * number * number;
     }
     
     /**

@@ -10,12 +10,13 @@ public class JettyServer {
 
 	public static void main(String[] args) {
 		
+		// set a port for this jetty server
 		port(DefaultConfiguration.JETTY_2_PORT);
 				
 		// our get 
 		get("/dice/:param", (request, response) -> {
 			int dice = new Integer(request.params(":param")); 
-			return new Roll(dice * 2);
+			return new Roll(dice);
 		});
 	}
 }

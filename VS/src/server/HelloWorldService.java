@@ -1,7 +1,6 @@
 package server;
 
 import static spark.Spark.*;
-import static spark.SparkBase.port;
 
 import config.DefaultConfiguration;
 import implementation.Roll;
@@ -17,6 +16,7 @@ public class HelloWorldService {
 		 */
 		//get("/hello/:param1" , (request, response) -> "Hello, "+request.params(":param1") );
 		
+		// set a port for this jetty server
 		port(DefaultConfiguration.JETTY_1_PORT);
 		
 		// our get 

@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html style="position: relative; transition: right 0.25s ease-in-out 0s; right: 0px;"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><script src="haproxyDocumentation-Dateien/ga.js" async="" type="text/javascript"></script><script>var __pbpa = true;</script><script>var translated_warning_string = 'Warning: Never enter your Tumblr password unless \u201chttps://www.tumblr.com/login\u201d\x0ais the address in your web browser.\x0a\x0aYou should also see a green \u201cTumblr, Inc.\u201d identification in the address bar.\x0a\x0aSpammers and other bad guys use fake forms to steal passwords.\x0a\x0aTumblr will never ask you to log in from a user\u2019s blog.\x0a\x0aAre you absolutely sure you want to continue?';</script><script type="text/javascript" language="javascript" src="haproxyDocumentation-Dateien/pre_tumblelog.js"></script>
+
+
+
+    <meta charset="UTF-8">
+  <title>Setup HAProxy for development environment on Mac... - Nepal on Rails</title>
+  <style type="text/css">figure {margin: 0;}</style>
+<link rel="shortcut icon" href="http://31.media.tumblr.com/avatar_e8b17b94917f_128.png">
+  <link rel="alternate" type="application/rss+xml" href="http://nepalonrails.tumblr.com/rss">
+    
+    <meta name="description" content="Setup HAProxy for development environment on Mac OSX for Rails app Assumptions • You know what HAProxy is • HomeBrew installed • A rails app to test against Installation Simple and easy to install...">
+          
+  <meta name="if:Show notes" content="1">
+  <meta name="text:Disqus Shortname" content="">
+    
+  <link rel="stylesheet" href="haproxyDocumentation-Dateien/style.css">
+  <style type="text/css"> 
+    
+  </style>
+<link rel="alternate" href="android-app://com.tumblr/tumblr/x-callback-url/blog?blogName=nepalonrails%26postID=9674428224">
+<link rel="alternate" href="ios-app://305343404/tumblr/x-callback-url/blog?blogName=nepalonrails&amp;postID=9674428224">
+<link rel="alternate" type="application/json+oembed" href="https://www.tumblr.com/oembed/1.0?url=http://nepalonrails.tumblr.com/post/9674428224/setup-haproxy-for-development-environment-on-mac" title="Setup HAProxy for development environment on Mac OSX for Rails app
+Assumptions • You know what HAProxy is
+• HomeBrew installed
+• A rails app to test against
+Installation Simple and easy to install HAProxy. Just the following commands:
+brew update...">
+<script src="haproxyDocumentation-Dateien/tumblelog.js"></script><style id="tumblr_teaser_follow_css" type="text/css">
+#tumblr_teaser_follow {
+display: block;
+opacity: 1;
+visibility: hidden;
+position: fixed;
+bottom: 0px;
+right: 0px;
+width: 1px;
+height: 1px;
+z-index: 2147483647;
+}
+#tumblr_teaser_follow.open {
+visibility: visible;
+width: 310px;
+height: 106px;
+}
+</style><style id="tumblr_iframe_css" type="text/css">
+.tumblr_controls {
+position: absolute;
+top: 0px;
+right: 0px;
+display: block;
+opacity: 1;
+width: 1px;
+height: 1px;
+z-index: 2147483647;
+visibility: hidden;
+pointer-events: none;
+}
+.tumblr_controls.visible {
+visibility: visible;
+pointer-events: all;
+}
+.tumblr_controls.sticky {
+position: fixed;
+}
+.tumblr_controls.transition {
+-webkit-transition: top 0.1s ease;
+-moz-transition: top 0.1s ease;
+-ms-transition: top 0.1s ease;
+-o-transition: top 0.1s ease;
+transition: top 0.1s ease;
+}
+iframe#tumblr_controls.tumblr_controls.sticky.transition {
+-webkit-animation: tumblr_controls_fade_in 0.3s 0.2s linear 1 both;
+-moz-animation: tumblr_controls_fade_in 0.3s 0.2s linear 1 both;
+-ms-animation: tumblr_controls_fade_in 0.3s 0.2s linear 1 both;
+-o-animation: tumblr_controls_fade_in 0.3s 0.2s linear 1 both;
+animation: tumblr_controls_fade_in 0.3s 0.2s linear 1 both;
+top: 0 !important;
+}
+.tumblr_controls.sticky.transition {
+-webkit-animation: tumblr_controls_fade_in 0.3s 0.2s linear 1 both;
+-moz-animation: tumblr_controls_fade_in 0.3s 0.2s linear 1 both;
+-ms-animation: tumblr_controls_fade_in 0.3s 0.2s linear 1 both;
+-o-animation: tumblr_controls_fade_in 0.3s 0.2s linear 1 both;
+animation: tumblr_controls_fade_in 0.3s 0.2s linear 1 both;
+top: 0 !important;
+}
+.tumblr_controls.flash_fix {
+visibility: hidden !important;
+}
+body.mobile_bar {
+-webkit-transition: padding-top 0.1s ease;
+-moz-transition: padding-top 0.1s ease;
+-ms-transition: padding-top 0.1s ease;
+-o-transition: padding-top 0.1s ease;
+transition: padding-top 0.1s ease;
+padding-top: 44px;
+}
+#tumblr_controls {
+width: 268px;
+height: 36px;
+}
+@-webkit-keyframes tumblr_controls_fade_in {
+0% {
+opacity: 0;
+}
+100% {
+opacity: 1;
+}
+}
+@-moz-keyframes tumblr_controls_fade_in {
+0% {
+opacity: 0;
+}
+100% {
+opacity: 1;
+}
+}
+@-ms-keyframes tumblr_controls_fade_in {
+0% {
+opacity: 0;
+}
+100% {
+opacity: 1;
+}
+}
+@-o-keyframes tumblr_controls_fade_in {
+0% {
+opacity: 0;
+}
+100% {
+opacity: 1;
+}
+}
+@keyframes tumblr_controls_fade_in {
+0% {
+opacity: 0;
+}
+100% {
+opacity: 1;
+}
+}
+</style>
+
+<link rel="stylesheet" type="text/css" href="haproxyDocumentation-Dateien/stylesheet.css">
+<meta name="keywords" content="loadbalancer,rails,haproxy">
+
+<!-- BEGIN TUMBLR FACEBOOK OPENGRAPH TAGS --><!-- If you'd like to specify your own Open Graph tags, define the og:url and og:title tags in your theme's HTML. --><!-- Read more: http://ogp.me/ --><meta property="fb:app_id" content="48119224995"><meta property="og:site_name" content=""><meta property="og:title" content="Setup HAProxy for development environment on Mac OSX for Rails app"><meta property="og:url" content="http://nepalonrails.tumblr.com/post/9674428224/setup-haproxy-for-development-environment-on-mac"><meta property="og:description" content="Assumptions • You know what HAProxy is
+• HomeBrew installed
+• A rails app to test against
+Installation Simple and easy to install HAProxy. Just the following commands:
+brew update brew install haproxy..."><meta property="og:determiner" content="a"><meta property="og:type" content="tumblr-feed:entry"><meta property="og:image" content="http://assets.tumblr.com/images/og/text_200.png"><meta property="al:ios:url" content="tumblr://x-callback-url/blog?blogName=nepalonrails&amp;postID=9674428224"><meta property="al:ios:app_name" content="Tumblr"><meta property="al:ios:app_store_id" content="305343404"><meta property="al:android:url" content="tumblr://x-callback-url/blog?blogName=nepalonrails&amp;postID=9674428224"><meta property="al:android:app_name" content="Tumblr"><meta property="al:android:package" content="com.tumblr"><!-- END TUMBLR FACEBOOK OPENGRAPH TAGS -->
+
+
+<!-- TWITTER TAGS --><meta charset="utf-8"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Setup HAProxy for development environment on Mac OSX for Rails app"><meta name="twitter:description" content="Assumptions
+
+ You know what HAProxy is
+ HomeBrew installed
+ A rails app to test against
+Installation
+
+ Simple and easy to install HAProxy. Just the following commands:
+
+brew update
+brew install haproxy
+
+
+Configuring haproxy config file inside the rails app
+
+ Add the following file inside..."><meta name="twitter:url" content="http://nepalonrails.tumblr.com/post/9674428224/setup-haproxy-for-development-environment-on-mac"><meta name="twitter:site" content="tumblr"><meta name="twitter:creator" content="nepalonrails"><meta name="twitter:app:name:iphone" content="Tumblr"><meta name="twitter:app:name:ipad" content="Tumblr"><meta name="twitter:app:name:googleplay" content="Tumblr"><meta name="twitter:app:id:iphone" content="305343404"><meta name="twitter:app:id:ipad" content="305343404"><meta name="twitter:app:id:googleplay" content="com.tumblr"><meta name="twitter:app:url:iphone" content="tumblr://x-callback-url/blog?blogName=nepalonrails&amp;postID=9674428224&amp;referrer=twitter-cards"><meta name="twitter:app:url:ipad" content="tumblr://x-callback-url/blog?blogName=nepalonrails&amp;postID=9674428224&amp;referrer=twitter-cards"><meta name="twitter:app:url:googleplay" content="tumblr://x-callback-url/blog?blogName=nepalonrails&amp;postID=9674428224&amp;referrer=twitter-cards">
+
+<!-- GOOGLE CAROUSEL --><script type="application/ld+json">{"@type":"SocialMediaPosting","url":"http:\/\/nepalonrails.tumblr.com\/post\/9674428224\/setup-haproxy-for-development-environment-on-mac","mainEntityOfPage":true,"datePublished":"2011-09-01T19:24:00-04:00","author":"nepalonrails","headline":"Setup HAProxy for development environment on Mac OSX for Rails app","articleBody":"Assumptions \u2022 You know what HAProxy is\n\u2022 HomeBrew installed\n\u2022 A rails app to test against\nInstallation Simple and easy to install HAProxy. Just the following commands:\nbrew update brew install haproxy  Configuring haproxy config file inside the rails app Add the following file inside...","@context":"http:\/\/schema.org"}</script>
+</head>
+<body>
+  <div id="wrapper">
+    <div id="header" role="banner">
+      <h1><a href="http://nepalonrails.tumblr.com/">Nepal on Rails</a></h1>
+      
+      
+      <div id="description">
+        <p>@millisami's rants!</p>
+      </div>
+      
+    </div>
+    
+    <div id="navigation">     
+      <div class="wrapper">
+        
+        
+        <form id="search" role="search" action="/search" method="get">
+          <input name="q" class="search" value="Search" onfocus="if(this.value == this.defaultValue) this.value = ''" onblur="if(!this.value) this.value = this.defaultValue" type="text">
+        </form>
+      </div>
+    </div>
+    
+    <div id="content" role="main">
+        
+    
+    
+    
+    
+      
+      
+          
+          <div class="post text">
+             
+            <div class="date">
+              <p><span class="day">02</span> 9 / 2011</p>
+            </div>
+            
+            
+            <div class="content">
+              
+              <h2 class="topic_head"><a href="http://nepalonrails.tumblr.com/post/9674428224/setup-haproxy-for-development-environment-on-mac">Setup HAProxy for development environment on Mac OSX for Rails app</a></h2>
+              
+    
+              <h3>Assumptions</h3>
+
+<ol><li>You know what <a href="http://haproxy.1wt.eu/" target="_blank">HAProxy</a> is</li>
+<li><a href="http://mxcl.github.com/homebrew/" target="_blank">HomeBrew</a> installed</li>
+<li>A rails app to test against</li>
+</ol><h3>Installation</h3>
+
+<p>Simple and easy to install HAProxy. Just the following commands:</p>
+
+<pre><code>brew update
+brew install haproxy
+</code></pre>
+
+<h3>Configuring haproxy config file inside the rails app</h3>
+
+<p>Add the following file inside <code>config/haproxy.cfg</code></p>
+
+<pre><code>global
+  maxconn 4096
+  pidfile ~/tmp/haproxy-queue.pid
+
+defaults
+  log global
+  log 127.0.0.1 local0
+  log 127.0.0.1 local1 notice  
+  mode http
+  timeout connect 300000
+  timeout client 300000
+  timeout server 300000
+  maxconn 2000
+  option redispatch
+  retries 3
+  option httpclose
+  option httplog
+  option forwardfor
+  option httpchk HEAD / HTTP/1.0
+
+frontend http-farm
+  bind *:9000
+  default_backend app1latest
+  acl url_tag02 path_beg /tag02/
+  use_backend tagged-02 if url_tag02
+
+backend app1latest
+  balance roundrobin
+  server localhost_9001 localhost:9001
+
+backend tagged-02
+  balance roundrobin
+  server localhost_9002 localhost:9002
+
+listen haproxyapp_admin:9100 127.0.0.1:9100
+  mode http
+  stats uri /
+</code></pre>
+
+<h3>Testing out</h3>
+
+<p>Now to test this architecture, fire-up 4 terminals.
+Run the following commands within the rails app directory</p>
+
+<p><strong>Terminal 1:</strong> <code>haproxy -f config/haproxy.cfg</code></p>
+
+<p>This will run the haproxy and you can view its metrics at <code>http://localhost:9100</code></p>
+
+<p><strong>Terminal 2:</strong> <code>bundle exec rails s -p 9001</code></p>
+
+<p><strong>Terminal 3:</strong> <code>bundle exec rails s -p 9002</code></p>
+
+<p>The above 2 commands fire up two separate backend servers which will get the request from haproxy</p>
+
+<p>And lastly, the following command with send the request at <code><a href="http://127.0.0.1:9000/" target="_blank">http://127.0.0.1:9000</a></code>. Do hit couple of times. 
+You’ll see how haproxy balance the requests and send it over the 2 backend servers.</p>
+
+<p><strong>Terminal 4:</strong> <code>curl <a href="http://127.0.0.1:9000/" target="_blank">http://127.0.0.1:9000</a></code></p>
+
+<p>Now you can play around with haproxy and your rails app with different configurations.
+The configurations are endless as per your needs.</p>
+
+<p><strong>Note:</strong> The application I’m working on has a different
+ requirement to run the application separately on different servers once
+ the new code changes is pushed to the main application for certain 
+time. Its like running the different versions of the same application 
+until the pending jobs are done. So, the strategy I took is to use 
+load-balancer (haproxy) to determine to which server farm to send based 
+off of the url substring. I will post the detailed explanation of the 
+architecture in future. So, if you want to stay tuned, you can follow <a href="http://twitter.com/#%21/nepalonrails" target="_blank">@nepalonrails</a></p>
+            </div>
+            
+            <div class="info">              
+               
+                <div>
+                  <p class="tags-label">Tags:</p>
+                  <ul class="tags">
+                    <li><a href="http://nepalonrails.tumblr.com/tagged/haproxy">haproxy</a></li><li><a href="http://nepalonrails.tumblr.com/tagged/rails">rails</a></li><li><a href="http://nepalonrails.tumblr.com/tagged/loadbalancer">loadbalancer</a></li>
+                  </ul>
+                </div>
+              
+              <p><a href="http://nepalonrails.tumblr.com/post/9674428224/setup-haproxy-for-development-environment-on-mac">Permalink</a> <span class="notes">4 notes</span> </p>
+            </div>
+          </div>
+          
+
+          
+          
+          
+          
+          
+
+          
+          
+          
+          
+          
+          
+
+    
+    
+    
+    
+    
+          
+
+          
+          
+          
+          
+
+          
+          
+          
+          
+          
+
+          
+          
+          
+          
+          
+          
+
+          
+          
+          
+          
+          
+
+
+            
+      
+            
+      
+      
+      
+
+      
+      
+      
+
+
+      
+      
+      
+      
+      
+      <div id="pagination" role="navigation">
+        <p>                                                   
+          
+          <a href="http://nepalonrails.tumblr.com/post/9912012961" class="newer">Next post »</a>
+          
+          
+          
+          <a href="http://nepalonrails.tumblr.com/post/9290788255" class="older">« Previous post</a>
+          
+        </p>
+      </div>
+      
+    </div>        
+  </div>
+
+  
+  <div id="footer">
+    <div class="wrapper">
+      <ul class="links" role="navigation">
+        <li><a href="http://nepalonrails.tumblr.com/archive">Archive</a></li>
+        <li><a href="http://nepalonrails.tumblr.com/rss">RSS</a></li>
+      </ul>
+      <p class="info-theme" role="contentinfo">Powered by <a href="http://www.tumblr.com/">Tumblr</a> and designed by <a href="http://kcmr.tumblr.com/">Kcmr</a>.</p>
+    </div>
+  </div>
+
+    
+
+    <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-162320-12']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+<script src="haproxyDocumentation-Dateien/jquery.js"></script>
+<script type="text/javascript">
+// http://ditio.net/2010/01/02/jquery-image-resize-plugin/
+(function($) {
+    $.fn.resize = function(options) {
+ 
+        var settings = $.extend({
+            scale: 1,
+            maxWidth: null,
+      maxHeight: null
+        }, options);
+ 
+        return this.each(function() {
+      
+      if(this.tagName.toLowerCase() != "img") {
+        // Only images can be resized
+        return $(this);
+      } 
+
+      var width = this.naturalWidth;
+      var height = this.naturalHeight;
+      if(!width || !height) {
+        // Ooops you are an IE user, let's fix it.
+        var img = document.createElement('img');
+        img.src = this.src;
+        
+        width = img.width;
+        height = img.height;
+      }
+      
+      if(settings.scale != 1) {
+        width = width*settings.scale;
+        height = height*settings.scale;
+      }
+      
+      var pWidth = 1;
+      if(settings.maxWidth != null) {
+        pWidth = width/settings.maxWidth;
+      }
+      var pHeight = 1;
+      if(settings.maxHeight != null) {
+        pHeight = height/settings.maxHeight;
+      }
+      var reduce = 1;
+      
+      if(pWidth < pHeight) {
+        reduce = pHeight;
+      } else {
+        reduce = pWidth;
+      }
+      
+      if(reduce < 1) {
+        reduce = 1;
+      }
+      
+      var newWidth = width/reduce;
+      var newHeight = height/reduce;
+      
+      return $(this)
+        .attr("width", newWidth)
+        .attr("height", newHeight);
+      
+        });
+    }
+})(jQuery);
+
+$(document).ready(function() {
+  $(".post .content img").resize({maxWidth: 600});
+});
+
+</script>
+<!-- BEGIN TUMBLR CODE --><iframe src="haproxyDocumentation-Dateien/analytics.html" scrolling="no" style="background-color:transparent; overflow:hidden; position:absolute; top:0; left:0; z-index:9999;" id="ga_target" frameborder="0" height="1" width="1"></iframe><script type="text/javascript">
+    (function(){
+        var analytics_frame = document.getElementById('ga_target');
+        var analytics_iframe_loaded;
+        var user_logged_in;
+        var blog_is_nsfw = 'No';
+        var addthis_enabled = false;
+
+        var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+        var eventer = window[eventMethod];
+        var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+        eventer(messageEvent,function(e) {
+            var message = (e.data && e.data.split) ? e.data.split(';') : '';
+            switch (message[0]) {
+                case 'analytics_iframe_loaded':
+                    analytics_iframe_loaded = true;
+                    postCSMessage();
+                    postGAMessage();
+                    postATMessage();
+                    postRapidMessage();
+                    break;
+                case 'user_logged_in':
+                    user_logged_in = message[1];
+                    postGAMessage();
+                    postATMessage();
+                    break;
+            }
+        }, false);
+
+        analytics_frame.src = "https://secure.assets.tumblr.com/analytics.html?ef130df8c2a7564280336b1092f2f094#" +
+                              "http://nepalonrails.tumblr.com";
+        function postGAMessage() {
+            if (analytics_iframe_loaded && user_logged_in) {
+                var is_ajax = false;
+                analytics_frame.contentWindow.postMessage(['tick_google_analytics', is_ajax, user_logged_in, blog_is_nsfw, '/post/9674428224/setup-haproxy-for-development-environment-on-mac?route=%2Fpost%2F%3Aid%2F%3Asummary'].join(';'), analytics_frame.src.split('/analytics.html')[0]);
+            }
+        }
+        function postCSMessage() {
+            COMSCORE = true;
+            analytics_frame.contentWindow.postMessage('enable_comscore;' + window.location, analytics_frame.src.split('/analytics.html')[0]);
+        }
+        function postATMessage() {
+            if (addthis_enabled && analytics_iframe_loaded) {
+                analytics_frame.contentWindow.postMessage('enable_addthis', analytics_frame.src.split('/analytics.html')[0]);
+            }
+        }
+        function postRapidMessage() {
+                            if (analytics_iframe_loaded) {
+                    var is_ajax = '';
+                    var route = '/post/:id/:summary';
+                    var tumblelog_id = '21221627';
+                    var yahoo_space_id = '1197719230';
+                    var rapid_client_only = '1';
+                    var apv = '1';
+                    var rapid_ex = '';
+
+                    analytics_frame.contentWindow.postMessage(
+                        [
+                            'tick_rapid', is_ajax, route, user_logged_in, tumblelog_id,
+                            yahoo_space_id, rapid_client_only, apv, rapid_ex
+                        ].join(';'),
+                        analytics_frame.src.split('/analytics.html')[0]
+                    );
+                }
+                    }
+    })();
+</script><script type="text/javascript">!function(s){s.src='https://px.srvcs.tumblr.com/impixu?T=1445176645&J=eyJ0eXBlIjoidXJsIiwidXJsIjoiaHR0cDpcL1wvbmVwYWxvbnJhaWxzLnR1bWJsci5jb21cL3Bvc3RcLzk2NzQ0MjgyMjRcL3NldHVwLWhhcHJveHktZm9yLWRldmVsb3BtZW50LWVudmlyb25tZW50LW9uLW1hYyIsInJlcXR5cGUiOjAsInJvdXRlIjoiXC9wb3N0XC86aWRcLzpzdW1tYXJ5In0=&U=FEOMOGHHKI&K=f6fe4f0442a0ecfb6028a6300ee9c437da45cdd857dc136d76e42c74f9add3d0&R=http%3A%2F%2Fwww.google.de%2Furl%3Fsa%3Dt%26rct%3Dj%26q%3D%26esrc%3Ds%26source%3Dweb%26cd%3D1%26sqi%3D2%26ved%3D0CCMQFjAAahUKEwiOyenClszIAhWIMhoKHYIhA_I%26url%3Dhttp%253A%252F%252Fnepalonrails.tumblr.com%252Fpost%252F9674428224%252Fsetup-haproxy-for-development-environment-on-mac%26usg%3DAFQjCNFqviM7IUW3luUfkmxTg3VgMt4asQ%26bvm%3Dbv.105454873%2Cd.d24%26cad%3Drja'.replace(/&R=[^&$]*/,'').concat('&R='+escape(document.referrer)).slice(0,2000).replace(/%.?.?$/,'');}(new Image());</script><noscript><img style="position:absolute;z-index:-3334;top:0px;left:0px;visibility:hidden;" src="https://px.srvcs.tumblr.com/impixu?T=1445176645&J=eyJ0eXBlIjoidXJsIiwidXJsIjoiaHR0cDpcL1wvbmVwYWxvbnJhaWxzLnR1bWJsci5jb21cL3Bvc3RcLzk2NzQ0MjgyMjRcL3NldHVwLWhhcHJveHktZm9yLWRldmVsb3BtZW50LWVudmlyb25tZW50LW9uLW1hYyIsInJlcXR5cGUiOjAsInJvdXRlIjoiXC9wb3N0XC86aWRcLzpzdW1tYXJ5Iiwibm9zY3JpcHQiOjF9&U=FEOMOGHHKI&K=f2c55f30ab9dc601dce38a401cbd41430f90a0a08c36e596de584ae92b73e501&R=http%3A%2F%2Fwww.google.de%2Furl%3Fsa%3Dt%26rct%3Dj%26q%3D%26esrc%3Ds%26source%3Dweb%26cd%3D1%26sqi%3D2%26ved%3D0CCMQFjAAahUKEwiOyenClszIAhWIMhoKHYIhA_I%26url%3Dhttp%253A%252F%252Fnepalonrails.tumblr.com%252Fpost%252F9674428224%252Fsetup-haproxy-for-development-environment-on-mac%26usg%3DAFQjCNFqviM7IUW3luUfkmxTg3VgMt4asQ%26bvm%3Dbv.105454873%2Cd.d24%26cad%3Drja"></noscript><script>
+        (function (w,d) {
+            'use strict';
+            var l = function(el, type, listener, useCapture) {
+                el.addEventListener ?
+                el.addEventListener(type, listener, !!useCapture) :
+                el.attachEvent && el.attachEvent('on' + type, listener, !!useCapture);
+            };
+            var a = function () {
+                                if (d.getElementById('tumblr-cdx')) {
+                    return;
+                }
+                var s = d.createElement('script');
+                var el = d.getElementsByTagName('script')[0];
+                s.async = true;
+                s.src = 'http://assets.tumblr.com/assets/scripts/vendor/cedexis/cedexis.radar.js?_v=9f90e827cf2f20702cf44af88c753ddb';
+                s.type = 'text/javascript';
+                s.id = 'tumblr-cdx';
+                d.body.appendChild(s);
+            };
+            l(w,'load',a);
+        }(window, document));
+</script><script type="text/javascript">!function(s){s.src='https://px.srvcs.tumblr.com/impixu?T=1445176645&J=eyJ0eXBlIjoicG9zdCIsInVybCI6Imh0dHA6XC9cL25lcGFsb25yYWlscy50dW1ibHIuY29tXC9wb3N0XC85Njc0NDI4MjI0XC9zZXR1cC1oYXByb3h5LWZvci1kZXZlbG9wbWVudC1lbnZpcm9ubWVudC1vbi1tYWMiLCJyZXF0eXBlIjowLCJyb3V0ZSI6IlwvcG9zdFwvOmlkXC86c3VtbWFyeSIsInBvc3RzIjpbeyJwb3N0aWQiOiI5Njc0NDI4MjI0IiwiYmxvZ2lkIjoiMjEyMjE2MjciLCJzb3VyY2UiOjMzfV19&U=CPLBDEELPE&K=3d5bdc2a4cc31a945f74feb354f10742130bb8e7d2a96afbfdedb86628ef3be8&R=http%3A%2F%2Fwww.google.de%2Furl%3Fsa%3Dt%26rct%3Dj%26q%3D%26esrc%3Ds%26source%3Dweb%26cd%3D1%26sqi%3D2%26ved%3D0CCMQFjAAahUKEwiOyenClszIAhWIMhoKHYIhA_I%26url%3Dhttp%253A%252F%252Fnepalonrails.tumblr.com%252Fpost%252F9674428224%252Fsetup-haproxy-for-development-environment-on-mac%26usg%3DAFQjCNFqviM7IUW3luUfkmxTg3VgMt4asQ%26bvm%3Dbv.105454873%2Cd.d24%26cad%3Drja'.replace(/&R=[^&$]*/,'').concat('&R='+escape(document.referrer)).slice(0,2000).replace(/%.?.?$/,'');}(new Image());</script><noscript><img style="position:absolute;z-index:-3334;top:0px;left:0px;visibility:hidden;" src="https://px.srvcs.tumblr.com/impixu?T=1445176645&J=eyJ0eXBlIjoicG9zdCIsInVybCI6Imh0dHA6XC9cL25lcGFsb25yYWlscy50dW1ibHIuY29tXC9wb3N0XC85Njc0NDI4MjI0XC9zZXR1cC1oYXByb3h5LWZvci1kZXZlbG9wbWVudC1lbnZpcm9ubWVudC1vbi1tYWMiLCJyZXF0eXBlIjowLCJyb3V0ZSI6IlwvcG9zdFwvOmlkXC86c3VtbWFyeSIsInBvc3RzIjpbeyJwb3N0aWQiOiI5Njc0NDI4MjI0IiwiYmxvZ2lkIjoiMjEyMjE2MjciLCJzb3VyY2UiOjMzfV0sIm5vc2NyaXB0IjoxfQ==&U=CPLBDEELPE&K=21b9109b6a64ca0206d651e8580748692c4e60f92d777287dbb892a410919c87&R=http%3A%2F%2Fwww.google.de%2Furl%3Fsa%3Dt%26rct%3Dj%26q%3D%26esrc%3Ds%26source%3Dweb%26cd%3D1%26sqi%3D2%26ved%3D0CCMQFjAAahUKEwiOyenClszIAhWIMhoKHYIhA_I%26url%3Dhttp%253A%252F%252Fnepalonrails.tumblr.com%252Fpost%252F9674428224%252Fsetup-haproxy-for-development-environment-on-mac%26usg%3DAFQjCNFqviM7IUW3luUfkmxTg3VgMt4asQ%26bvm%3Dbv.105454873%2Cd.d24%26cad%3Drja"></noscript><script>
+        (function (w,d) {
+            'use strict';
+            var l = function(el, type, listener, useCapture) {
+                el.addEventListener ?
+                el.addEventListener(type, listener, !!useCapture) :
+                el.attachEvent && el.attachEvent('on' + type, listener, !!useCapture);
+            };
+            var a = function () {
+                                if (d.getElementById('tumblr-cdx')) {
+                    return;
+                }
+                var s = d.createElement('script');
+                var el = d.getElementsByTagName('script')[0];
+                s.async = true;
+                s.src = 'http://assets.tumblr.com/assets/scripts/vendor/cedexis/cedexis.radar.js?_v=9f90e827cf2f20702cf44af88c753ddb';
+                s.type = 'text/javascript';
+                s.id = 'tumblr-cdx';
+                d.body.appendChild(s);
+            };
+            l(w,'load',a);
+        }(window, document));
+</script><iframe id="tumblr_controls" class="tumblr_controls sticky visible" scrolling="no" src="haproxyDocumentation-Dateien/o.html" frameborder="0" height="36" width="268"></iframe>
+<div id="teaser_iframe_container" style="display: block; opacity: 0; visibility: visible; position: fixed; top: 0px; right: 0px; bottom: 0px; width: 1px; height: 100%; z-index: 2147483646; overflow: hidden; background-color: rgba(0, 0, 0, 0.6); transition: width 0.25s ease-in-out 0s;"><iframe style="display: block; opacity: 1; visibility: visible; position: absolute; top: 0px; right: 0px; min-width: 100%; width: 360px; height: 100%;" scrolling="no" src="haproxyDocumentation-Dateien/teaser.html" id="teaser_iframe" frameborder="0" height="1" width="1"></iframe></div><script type="text/javascript">
+    (function(Tumblr){
+        var follow_iframe_initialized = false;
+        if (Tumblr.FollowTeaser && Tumblr.PostMessageListener) {
+            // Don't do anything until the first initialize event
+            Tumblr.PostMessageListener.initialize(function(message, origin) {
+                if (follow_iframe_initialized || message.length < 2) return;
+
+                if (message[0] === 'follow_iframe' && message[1] === 'enable') {
+                    Tumblr.FollowTeaser.current_page = 1;
+                    Tumblr.FollowTeaser.infer_infinite_scroll = true;
+                    Tumblr.FollowTeaser.create_from_tumblr_controls("http:\/\/assets.tumblr.com\/assets\/html\/iframe\/follow.html?_v=88705e693176f19448a6015fcaf782bc");
+                    Tumblr.FollowTeaser.scroll_listener(true);
+                    follow_iframe_initialized = true;
+                }
+            });
+        }
+    })(this.Tumblr || (this.Tumblr = {}));
+</script><!--[if IE]><script type="text/javascript">document.getElementById('tumblr_controls').allowTransparency=true;</script><![endif]--><!-- END TUMBLR CODE -->
+
+
+<iframe src="haproxyDocumentation-Dateien/follow.html" scrolling="no" id="tumblr_teaser_follow" frameborder="0" height="1" width="1"></iframe><script id="tumblr-cdx" type="text/javascript" src="haproxyDocumentation-Dateien/cedexis.js" async=""></script></body></html>
