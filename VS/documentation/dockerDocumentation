@@ -1,0 +1,29 @@
+// create new virtual machine
+docker-machine create --driver virtualbox nameOfYourMachine
+
+// show all machines
+docker-machine ls
+
+// get virtual machine infos
+docker-machine env nameOfYourMachine
+
+// connect your shell to a virtual machine
+eval "$(docker-machine env nameOfYourMachine)"
+
+// remove a virtual machine 
+docker-machine rm nameOfYourMachine
+
+// start a stopped machine
+docker-machine start
+
+// stop a running machine
+docker-machine stop
+
+// restart a running machine
+docker-machine restart
+
+// get machine details
+docker-machine inspect
+
+// get ip address of machine
+docker-machine ip

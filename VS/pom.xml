@@ -6,7 +6,10 @@
   <build>
     <sourceDirectory>src</sourceDirectory>
     <testSourceDirectory>test</testSourceDirectory>
+    
+    <!-- Our Plugins -->
     <plugins>
+    
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.3</version>
@@ -15,9 +18,64 @@
           <target>1.8</target>
         </configuration>
       </plugin>
+      
+      <!-- 
+      This plugin create a .jar file from our first jetty server
+      this happens in the package phase
+	  -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>              
+        <executions>
+        
+        <!-- First server configuration -->
+          <execution>
+          <id>first_server_id</id>
+            <goals>
+              <goal>attached</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>            
+              <finalName>firstJettyServer</finalName>              
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>              
+              <archive>              
+                <manifest>
+                  <mainClass>server.HelloWorldService</mainClass>
+                </manifest>                               
+              </archive>
+            </configuration>
+          </execution>
+          
+          <!-- Second server configuration -->
+          <execution>
+          <id>second_server_id</id>
+            <goals>
+              <goal>attached</goal>
+            </goals>
+            <phase>package</phase>            
+            <configuration>            
+              <finalName>secondJettyServer</finalName>              
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>              
+              <archive>              
+                <manifest>
+                  <mainClass>server.JettyServer</mainClass>
+                </manifest>                               
+              </archive>
+            </configuration>
+          </execution>
+         
+        </executions>
+      </plugin>
+      
     </plugins>
   </build>
+  
   <dependencies>
+  
     <!-- Java SPARK REST API -->
   	<dependency>
   		<groupId>com.sparkjava</groupId>
@@ -29,5 +87,7 @@
   		<artifactId>gson</artifactId>
   		<version>2.3.1</version>
   	</dependency>
+  	
   </dependencies>
+  
 </project>
