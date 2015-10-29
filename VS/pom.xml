@@ -42,7 +42,7 @@
               </descriptorRefs>              
               <archive>              
                 <manifest>
-                  <mainClass>server.HelloWorldService</mainClass>
+                  <mainClass>server.JettyServer</mainClass>
                 </manifest>                               
               </archive>
             </configuration>
