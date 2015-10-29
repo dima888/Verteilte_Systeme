@@ -12,6 +12,5 @@ import implementation.Roll;
 
 public interface DiceRMI extends Remote {
 	
-	
     Roll roll() throws RemoteException;
 }

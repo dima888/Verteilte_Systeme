@@ -6,13 +6,14 @@ import static spark.SparkBase.port;
 import config.DefaultConfiguration;
 import implementation.Roll;
 
+/**
+ * Starts our Rest-Services
+ * @author Flah
+ *
+ */
 public class JettyServer {
 
-	public static void main(String[] args) {
-		
-		// set a port for this jetty server
-		port(DefaultConfiguration.JETTY_2_PORT);
-				
+	public static void main(String[] args) {				
 		// our get 
 		get("/dice/:param", (request, response) -> {
 			int dice = new Integer(request.params(":param")); 
