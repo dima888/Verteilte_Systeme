@@ -1,6 +1,8 @@
 package implementation;
 
 import java.rmi.*;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.Random;
 
 import implementation.Roll;
 import interfaces.DiceRMI;
@@ -10,11 +12,17 @@ import interfaces.DiceRMI;
  * @author foxhound
  *
  */
+public class DiceRMIImpl extends UnicastRemoteObject implements DiceRMI {
 
-public class DiceRMIImpl implements DiceRMI {
+	private static final long serialVersionUID = 1L;
 	
+	public DiceRMIImpl() throws RemoteException {
+		super();
+	}
+
 	@Override
-    public Roll roll() throws RemoteException {
-    	return new Roll(5);
-    }
+	public Roll roll() throws RemoteException {
+		return new Roll(new Random().nextInt(6) + 1);
+	}
+
 }
