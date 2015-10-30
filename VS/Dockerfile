@@ -20,4 +20,3 @@ EXPOSE 4567
 
 # container configuration
 CMD ["/usr/lib/jvm/java-8-openjdk-amd64/bin/java", "-jar", "target/firstJettyServer-jar-with-dependencies.jar"]
-#CMD ["/usr/bin/java", "-jar", "target/firstJettyServer-jar-with-dependencies.jar"]

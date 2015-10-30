@@ -4,7 +4,9 @@
   <artifactId>VS</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <build>
-    <sourceDirectory>src</sourceDirectory>
+<!--     <sourceDirectory>src</sourceDirectory> -->
+	<sourceDirectory>.</sourceDirectory>
+
     <testSourceDirectory>test</testSourceDirectory>
     
     <!-- Our Plugins -->
@@ -71,7 +73,7 @@
         </executions>
       </plugin>
       
-    </plugins>
+    </plugins>   
   </build>
   
   <dependencies>

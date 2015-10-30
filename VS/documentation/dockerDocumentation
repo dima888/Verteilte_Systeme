@@ -1,5 +1,5 @@
 // create new virtual machine
-docker-machine create --driver virtualbox nameOfYourMachine
+ 
 
 // show all machines
 docker-machine ls
@@ -27,3 +27,15 @@ docker-machine inspect
 
 // get ip address of machine
 docker-machine ip
+
+
+
+
+// ------ load a container in docker inviroment ------
+1. navigate to our Dockerfile
+
+2. execute follow command:
+docker build -t yourAppNameContainer -f DockerFile .
+ 
+3. Once the image is built, start it with: 
+docker run -d -p 4567:4567 appName  

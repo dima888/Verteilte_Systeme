@@ -4,8 +4,9 @@ import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Random;
 
-import implementation.Roll;
-import interfaces.DiceRMI;
+import rmi.interfaces.DiceRMI;
+
+
 
 /**
  * Implementation of DiceRMI Interface
