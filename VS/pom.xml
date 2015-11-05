@@ -38,13 +38,13 @@
             </goals>
             <phase>package</phase>
             <configuration>            
-              <finalName>firstJettyServer</finalName>              
+              <finalName>firstDice</finalName>              
               <descriptorRefs>
                 <descriptorRef>jar-with-dependencies</descriptorRef>
               </descriptorRefs>              
               <archive>              
                 <manifest>
-                  <mainClass>server.JettyServer</mainClass>
+                  <mainClass>server/diceService.Dice</mainClass>
                 </manifest>                               
               </archive>
             </configuration>
@@ -58,18 +58,39 @@
             </goals>
             <phase>package</phase>            
             <configuration>            
-              <finalName>secondJettyServer</finalName>              
+              <finalName>secondDice</finalName>              
               <descriptorRefs>
                 <descriptorRef>jar-with-dependencies</descriptorRef>
               </descriptorRefs>              
               <archive>              
                 <manifest>
-                  <mainClass>server.JettyServer</mainClass>
+                  <mainClass>server/diceService.Dice</mainClass>
                 </manifest>                               
               </archive>
             </configuration>
-          </execution>
-         
+          </execution>        
+          
+          <!-- Our game service configuration -->
+          
+          <execution>
+          <id>game_server</id>
+            <goals>
+              <goal>attached</goal>
+            </goals>
+            <phase>package</phase>            
+            <configuration>            
+              <finalName>gameServer</finalName>              
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>              
+              <archive>              
+                <manifest>
+                  <mainClass>server/gameService.GameService</mainClass>
+                </manifest>                               
+              </archive>
+            </configuration>
+          </execution>   
+           
         </executions>
       </plugin>
       
