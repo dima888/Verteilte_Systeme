@@ -1,5 +1,5 @@
 // create new virtual machine
- 
+docker-machine create --driver virtualbox nameOfYourMachine 
 
 // show all machines
 docker-machine ls
