@@ -39,3 +39,5 @@ docker build -t yourAppNameContainer -f DockerFile .
  
 3. Once the image is built, start it with: 
 docker run -d -p 4567:4567 appName  
+
+4. push the image

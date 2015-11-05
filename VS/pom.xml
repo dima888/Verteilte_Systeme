@@ -73,6 +73,25 @@
         </executions>
       </plugin>
       
+      <!-- Start our Docker and load the images in the docker machines -->
+<!--       <executable>${basedir}/scriptFiles/startDices.sh</executable> -->
+ <plugin>
+  <artifactId>exec-maven-plugin</artifactId>
+  <groupId>org.codehaus.mojo</groupId>
+  <executions>
+    <execution><!-- Run our version calculation script -->
+      <id>dices_executor</id>
+      <phase>install</phase>
+      <goals>
+        <goal>exec</goal>
+      </goals>
+      <configuration>
+      	<executable>startDices.sh</executable> 
+      </configuration>
+    </execution>
+  </executions>
+</plugin>
+      
     </plugins>   
   </build>
   
