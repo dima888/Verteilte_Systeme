@@ -1,4 +1,4 @@
-package server;
+package server.gameService;
 
 import static implementation.GameUtility.gameAddPlayer;
 import static implementation.GameUtility.gameExists;
@@ -29,15 +29,7 @@ import implementation.Roll;
 public class GameService {
 	public static void main(String[] args) {
 		Gson gson = new Gson();
-		Random random = new Random();
 		List<Game> gamesList = new ArrayList<>();
-		
-		// Gives a single dice roll
-		get("/dice", (req, res) -> {
-			res.type(DefaultConfiguration.RESPONSE_TYPE_JSON);
-			res.status(200);
-			return gson.toJson(new Roll(random.nextInt(6) + 1));
-		});
 		
 		// Starts a new Game
 		post("/games", (req, res) -> {

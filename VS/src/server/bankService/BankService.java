@@ -1,4 +1,4 @@
-package server;
+package server.bankService;
 
 public class BankService {
 
