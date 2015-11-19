@@ -3,14 +3,19 @@ package implementation;
 import java.util.ArrayList;
 import java.util.List;
 
+import interfaces.GameComponent;
+
 /**
  * Our Bank implementation
  * @author foxhound
  */
-public class Bank {
+public class Bank implements GameComponent {
 
 	private String gameID = "";
+	
+	// TODO: Change to account object
 	List<String> playerIDList = new ArrayList<String>();
+	private int accountBalance = 0;
 	
 	/**
 	 * FIXME: not defined in our UML
@@ -26,11 +31,13 @@ public class Bank {
 	 * Method returns the id to related game
 	 * @return String
 	 */
-	public String getGameID() {
+	@Override
+	public String getID() {
 		return gameID;
 	}
 	
 	/**
+	 * TODO: change to account Object (playerIDList)
 	 * Method add a player account to our bank
 	 * by successful add from a player id return the method true, else false
 	 * @param playerID - id from a player
@@ -61,4 +68,5 @@ public class Bank {
 	public List<String> getAccounts() {
 		return playerIDList;
 	}
+
 }

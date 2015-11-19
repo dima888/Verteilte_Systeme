@@ -1,11 +1,14 @@
 package implementation;
+
+import interfaces.GameComponent;
+
 /**
  * Implementation of the Player-Scheme
  * 
  * @author Flah
  * @see <a href="https://pub.informatik.haw-hamburg.de/home/pub/prof/kossakowski_klaus-peter/wise2015/verteiltesysteme/step2.raml">API</a>
  */
-public class Player {
+public class Player implements GameComponent {
 	
 	/**
 	 * Unique identifier of a Player-Object
@@ -80,7 +83,8 @@ public class Player {
 		this.position = position;
 	}
 
-	public String getPlayerID() {
+	@Override
+	public String getID() {
 		return playerID;
 	}
 

@@ -1,6 +1,10 @@
 package implementation;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import interfaces.GameComponent;
 
 /**
  * Implementation of the Game-Scheme
@@ -8,7 +12,7 @@ import java.util.List;
  * @author Flah
  * @see <a href="https://pub.informatik.haw-hamburg.de/home/pub/prof/kossakowski_klaus-peter/wise2015/verteiltesysteme/step2.raml">API</a>
  */
-public class Game {
+public class Game implements GameComponent {
 	/**
 	 * Object-Counter used as unique identifier 
 	 */
@@ -39,16 +43,16 @@ public class Game {
 	 * Adds a player to a game
 	 * @param p - a player object
 	 */
-	public void addPlayer(Player p) {
-		this.players.add(p);
+	public boolean addPlayer(Player p) {
+		return this.players.add(p);
 	}
 	
 	/**
 	 * Removes a player from a game
 	 * @param p - a player object
 	 */
-	public void removePlayer(Player p) {
-		this.players.remove(p);
+	public boolean removePlayer(Player p) {
+		return this.players.remove(p);
 	}
 	
 	/**
@@ -59,9 +63,25 @@ public class Game {
 	}
 	
 	/**
+	 * Method return a player by id
+	 * By success return the method a player, else null
+	 * @param id - player id
+	 * @return Player
+	 */
+	public Player getPlayerByID(String id) {
+		for ( Player player : players ) {
+			if ( player.getID().compareTo(id) == 0 ) {
+				return player;
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * @return Unique identifier for this game
 	 */
-	public String getGameID() {
+	@Override
+	public String getID() {
 		return this.gameID;
 	}
 }

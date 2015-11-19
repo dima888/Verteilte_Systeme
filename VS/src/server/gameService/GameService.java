@@ -1,24 +1,17 @@
 package server.gameService;
 
-import static implementation.GameUtility.gameAddPlayer;
-import static implementation.GameUtility.gameExists;
-import static implementation.GameUtility.getGame;
-import static implementation.PlayerUtility.getPlayer;
-import static implementation.PlayerUtility.playerExists;
 import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import com.google.gson.Gson;
 
 import config.DefaultConfiguration;
 import implementation.Game;
+import implementation.GameController;
 import implementation.Player;
-import implementation.Roll;
 
 /**
  * Implements the resourcetype: Game of
@@ -29,14 +22,19 @@ import implementation.Roll;
 public class GameService {
 	public static void main(String[] args) {
 		Gson gson = new Gson();
-		List<Game> gamesList = new ArrayList<>();
+//		List<Game> gamesList = new ArrayList<>();
 		
 		// Starts a new Game
 		post("/games", (req, res) -> {
 			res.type(DefaultConfiguration.RESPONSE_TYPE_JSON);
 			res.status(201);
 			Game newGame = new Game();
-			gamesList.add(newGame);
+			
+			// old colde
+			//gamesList.add(newGame);
+			
+			// new code
+			GameController.addGame(newGame);
 			return gson.toJson(newGame);
 		});
 		
@@ -45,14 +43,15 @@ public class GameService {
 			String gameID = req.params(":gameid");
 			String playerID = req.params(":playerid");
 			
-			if(gameExists(gameID, gamesList)) {
+			// new code
+			if ( GameController.gameExist(gameID) ) {
 				res.status(200);
-				Player p = new Player(playerID);
-				gameAddPlayer(gameID, p, gamesList);
-				return gson.toJson(p);
+				Player player = new Player(playerID);				
+				GameController.addPlayer(gameID, player);
+				return gson.toJson(player);
 			} else {
 				res.status(404);
-				return "Spiel existiert nicht!";				
+				return "Spiel existiert nicht!";
 			}
 		});
 		
@@ -61,14 +60,16 @@ public class GameService {
 			String gameID = req.params(":gameid");
 			String playerID = req.params(":playerid");		
 			
-			if(gameExists(gameID, gamesList)) {
-				Game g = getGame(gameID, gamesList);
-				List<Player> playersList = g.getPlayersList();
+			// new code
+			if ( GameController.gameExist(gameID) ) {
+				Game game = GameController.getGame(gameID);
 				
-				if(playerExists(playerID, playersList)) {
-					Player p = getPlayer(playerID, playersList);
+				List<Player> playersList = game.getPlayersList(); 
+				
+				if ( GameController.playerExist(gameID, playersList) ) {
+					Player player = GameController.getPlayer(gameID, playerID);
 					res.status(200);
-					return p.getReady();
+					return player.getReady();
 				} else {
 					res.status(404);
 					return "Spieler existiert nicht!";
@@ -84,14 +85,15 @@ public class GameService {
 			String gameID = req.params(":gameid");
 			String playerID = req.params(":playerid");		
 			
-			if(gameExists(gameID, gamesList)) {
-				Game g = getGame(gameID, gamesList);
-				List<Player> playersList = g.getPlayersList();
+			// new code
+			if( GameController.gameExist(gameID) ) {
+				Game game = GameController.getGame(gameID);
+				List<Player> playersList = game.getPlayersList();
 				
-				if(playerExists(playerID, playersList)) {
-					Player p = getPlayer(playerID, playersList);
-					p.setReady(! p.getReady()); // Toggled den Status
-					return p.getReady();
+				if( GameController.playerExist(playerID, playersList) ) {
+					Player player = GameController.getPlayer(gameID, playerID);
+					player.setReady(! player.getReady()); // Toggled den Status
+					return player.getReady();
 				} else {
 					res.status(404);
 					return "Spieler existiert nicht!";
@@ -99,7 +101,7 @@ public class GameService {
 			} else {
 				res.status(404);
 				return "Spiel existiert nicht!";
-			}			
+			}	
 		});		
 	}
 }
