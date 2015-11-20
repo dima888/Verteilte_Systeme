@@ -2,16 +2,19 @@ package server.bankService;
 
 import static spark.Spark.post;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static spark.Spark.get;
 
 import com.google.gson.Gson;
 
 import config.DefaultConfiguration;
+import implementation.Account;
 import implementation.Bank;
+import implementation.Game;
 import implementation.GameController;
+import implementation.Player;
+import server.db.DataBase;
+
+import static spark.Spark.*;
 
 /**
  * Our Bank service
@@ -28,6 +31,9 @@ public class BankService {
 		// gson object 
 		Gson gson = new Gson();
 		
+		// delete this, is only for testing
+		port(4568);
+		
 //========================================================================
 		/**
 		 * Service create a account
@@ -35,15 +41,32 @@ public class BankService {
 		 * post /banks/{gameid}/players
 		 */
 		post("/banks/:gameID/players", (req, res) -> {
-			
+						
 			// get game id from client input
 			String gameID = req.params("gameID");
 			
-			// create a new bank with client game id
-			Bank bank = new Bank(gameID);					
+			// get our game as gson
+			String gameGson = DataBase.read(DefaultConfiguration.DB_URL_READ, gameID);
 			
-			// save the current bank in our banklist object
-			GameController.addBank(bank);
+			// Precondition
+			if ( gameGson == null ) {
+				res.status(404);
+				return "Spiel existiert nicht!";
+			}
+			
+			// parse json to game object
+			Game game = gson.fromJson(gameGson, Game.class);					
+			
+			// get bank from our game
+			Bank bank = game.getBank();					
+			
+			// create accounts for the bank in all clients
+			for ( Player player : game.getPlayersList() ) {
+				bank.addAccount(player.getID());
+			}
+			
+			// save modify game object
+			DataBase.write(DefaultConfiguration.DB_URL_WRITE, game);
 			
 			// return result
 			res.type(DefaultConfiguration.RESPONSE_TYPE_JSON);
@@ -58,15 +81,46 @@ public class BankService {
 		 * der Kontostand abgefragt werden kann mit
 		 * get /banks/{gameid}/players/{playerid}
 		 */
-		get("/banks/:gameID/players/:playerID", (req, res) -> {
+		get("/banks/:gameID/players/:playerID", (req, res) -> {		
 			
-			// search the right bank
+			// get game id from client input
+			String gameID = req.params("gameID");		
+			
+			// get player id from client input
+			String playerID = req.params("playerID");
+			
+			// get the game as gson from our db
+			String gameGson = DataBase.read(DefaultConfiguration.DB_URL_READ, gameID);
+			
+			// precondition
+			if ( gameGson == null ) {
+				res.status(404);
+				return "Spiel existiert nicht!";
+			}
+											
+			// parse json to game object
+			Game game = gson.fromJson(gameGson, Game.class);
+						
+			// precondition
+			if ( game.getPlayerByID(playerID) == null ) {
+				res.status(404);
+				return "Spieler mit dieser ID existiert nicht!";
+			}
+			
+			// get our bank to the game id
+			Bank bank = game.getBank();
+			
+			// get our account to the param player
+			Account account = bank.getAccountBy(playerID);
 			
 			// get the account balance of this bank to a player id
+			int playerMount = account.getSaldo();
+			
+			// define 
+			res.status(200);		
 			
 			// return result
-			res.status(200);
-			return "";
+			return gson.toJson(playerMount);			
 		}) ;
 //========================================================================		
 		

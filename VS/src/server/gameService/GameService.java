@@ -1,28 +1,24 @@
 package server.gameService;
 
-import static spark.Spark.get;
-import static spark.Spark.post;
-import static spark.Spark.put;
-
-import java.util.List;
+import static spark.Spark.*;
 
 import com.google.gson.Gson;
 
 import config.DefaultConfiguration;
 import implementation.Game;
-import implementation.GameController;
 import implementation.Player;
+import server.db.DataBase;
 
 /**
  * Implements the resourcetype: Game of
  * 
- * @author Flah
+ * @author Flah & Foxhound
  *
  */
 public class GameService {
+	
 	public static void main(String[] args) {
-		Gson gson = new Gson();
-//		List<Game> gamesList = new ArrayList<>();
+		Gson gson = new Gson();				
 		
 		// Starts a new Game
 		post("/games", (req, res) -> {
@@ -30,11 +26,10 @@ public class GameService {
 			res.status(201);
 			Game newGame = new Game();
 			
-			// old colde
-			//gamesList.add(newGame);
+			// add game object in our db
+			//GameController.addGame(newGame, "http://localhost:7777/db/save/" + gson.toJson(newGame));
+			DataBase.write(DefaultConfiguration.DB_URL_WRITE, newGame);
 			
-			// new code
-			GameController.addGame(newGame);
 			return gson.toJson(newGame);
 		});
 		
@@ -43,11 +38,28 @@ public class GameService {
 			String gameID = req.params(":gameid");
 			String playerID = req.params(":playerid");
 			
-			// new code
-			if ( GameController.gameExist(gameID) ) {
+			// get our game as gson
+			String gameGson = DataBase.read(DefaultConfiguration.DB_URL_READ, gameID);
+			
+			// new code			
+			if ( gameGson != null) {
 				res.status(200);
-				Player player = new Player(playerID);				
-				GameController.addPlayer(gameID, player);
+				Player player = new Player(playerID);	
+				
+				// json to game object
+				Game game = gson.fromJson(gameGson, Game.class);
+				
+				// precondition: player exist?
+				if ( game.getPlayerByID(playerID) != null ) {
+					return "Player exestiert bereits";
+				}
+				
+				// add a player to our game object
+				game.addPlayer(player);
+				
+				// save the object again in our db
+				DataBase.write(DefaultConfiguration.DB_URL_WRITE, game);
+				
 				return gson.toJson(player);
 			} else {
 				res.status(404);
@@ -58,16 +70,21 @@ public class GameService {
 		// Retrives if the player is ready
 		get("/games/:gameid/players/:playerid/ready", (req, res) -> {
 			String gameID = req.params(":gameid");
-			String playerID = req.params(":playerid");		
+			String playerID = req.params(":playerid");			
 			
-			// new code
-			if ( GameController.gameExist(gameID) ) {
-				Game game = GameController.getGame(gameID);
+			// get the game as gson from our db
+			String gameGson = DataBase.read(DefaultConfiguration.DB_URL_READ, gameID);					
+			
+			// check if game exist
+			if ( gameGson != null ) {
 				
-				List<Player> playersList = game.getPlayersList(); 
+				// parse json to game object
+				Game game = gson.fromJson(gameGson, Game.class);
+
+				Player player = game.getPlayerByID(playerID);
 				
-				if ( GameController.playerExist(gameID, playersList) ) {
-					Player player = GameController.getPlayer(gameID, playerID);
+				// check if the game include player with this id
+				if ( player != null ) {															
 					res.status(200);
 					return player.getReady();
 				} else {
@@ -83,20 +100,33 @@ public class GameService {
 		// Changes the readystate of a player
 		put("/games/:gameid/players/:playerid/ready", (req, res) -> {
 			String gameID = req.params(":gameid");
-			String playerID = req.params(":playerid");		
+			String playerID = req.params(":playerid");
+							
+			// get the game as gson from our db
+			String gameGson = DataBase.read(DefaultConfiguration.DB_URL_READ, gameID);
 			
-			// new code
-			if( GameController.gameExist(gameID) ) {
-				Game game = GameController.getGame(gameID);
-				List<Player> playersList = game.getPlayersList();
+			// Precondition
+			if( gameGson != null ) {
 				
-				if( GameController.playerExist(playerID, playersList) ) {
-					Player player = GameController.getPlayer(gameID, playerID);
-					player.setReady(! player.getReady()); // Toggled den Status
+				// parse json to game object
+				Game game = gson.fromJson(gameGson, Game.class);
+				
+				// get player by id from our game object
+				Player player = game.getPlayerByID(playerID);
+				
+				// precondition
+				if ( player != null ) {
+					
+					// Toggled den Status
+					player.setReady(! player.getReady()); 
+					
+					// save modify game object
+					DataBase.write(DefaultConfiguration.DB_URL_WRITE, game);
+					
 					return player.getReady();
 				} else {
 					res.status(404);
-					return "Spieler existiert nicht!";
+					return "Spieler mit dieser ID existiert nicht!";
 				}
 			} else {
 				res.status(404);

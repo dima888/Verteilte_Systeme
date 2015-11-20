@@ -13,9 +13,8 @@ public class Bank implements GameComponent {
 
 	private String gameID = "";
 	
-	// TODO: Change to account object
-	List<String> playerIDList = new ArrayList<String>();
-	private int accountBalance = 0;
+	List<Account> playerAccountList = new ArrayList<Account>();
+	private int accountAmount = 1_000_000;
 	
 	/**
 	 * FIXME: not defined in our UML
@@ -25,6 +24,10 @@ public class Bank implements GameComponent {
 	 */
 	public Bank(String gameID) {
 		this.gameID = gameID;
+	}
+	
+	public int getBankAmount() {
+		return accountAmount;
 	}
 	
 	/**
@@ -37,18 +40,19 @@ public class Bank implements GameComponent {
 	}
 	
 	/**
-	 * TODO: change to account Object (playerIDList)
 	 * Method add a player account to our bank
 	 * by successful add from a player id return the method true, else false
 	 * @param playerID - id from a player
 	 * @return boolean  
 	 */
-	public boolean addAccount(String playerID) {
-		// precondition: player id exist once in the list
-		if ( playerIDList.contains(playerID) ) {
-			return false;
-		}	
-		return playerIDList.add(playerID);
+	public boolean addAccount(String playerID) {		
+		// precondition: for not dublication accounts
+		for ( Account account : playerAccountList) {
+			if ( account.getID().compareTo(playerID) == 0) {
+				return false;
+			}
+		}		
+		return playerAccountList.add(new Account(playerID));
 	}
 	
 	/**
@@ -58,15 +62,34 @@ public class Bank implements GameComponent {
 	 * @return boolean
 	 */
 	public boolean removeAccount(String playerID) {
-		return playerIDList.remove(playerID);
+		for ( Account account : playerAccountList ) {
+			if ( account.getID().compareTo(playerID) == 0 ) {
+				return playerAccountList.remove(playerID);
+			}
+		}
+		return false;
 	}
 	
 	/**
 	 * Method return a list with player accounts 
 	 * @return List<String> / ArrayList
 	 */
-	public List<String> getAccounts() {
-		return playerIDList;
+	public List<Account> getAccountList() {
+		return playerAccountList;
+	}
+	
+	/**
+	 * Method return a acocunt from a player
+	 * @param playerID - player id
+	 * @return Account or null, if account not exist to param playerID
+	 */
+	public Account getAccountBy(String playerID) {
+		for ( Account account : playerAccountList ) {
+			if ( account.getID().compareTo(playerID) == 0) {
+				return account;
+			}
+		}
+		return null;
 	}
 
 }

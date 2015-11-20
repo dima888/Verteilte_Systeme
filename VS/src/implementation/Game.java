@@ -28,6 +28,9 @@ public class Game implements GameComponent {
 	 */
 	private List<Player> players;
 	
+	// the bank of our game
+	private Bank bank;
+	
 	/**
 	 * Public constructor
 	 * Assigns a unique identifier for a object
@@ -35,8 +38,17 @@ public class Game implements GameComponent {
 	 */
 	public Game() {
 		this.gameID = Integer.toString(gamesCounter);
+		bank = new Bank(gameID);
 		gamesCounter++;
 		this.players = new ArrayList<>();
+	}
+	
+	/**
+	 * Method return our bank object to current game
+	 * @return Bank	
+	 */
+	public Bank getBank() {
+		return bank;
 	}
 	
 	/**

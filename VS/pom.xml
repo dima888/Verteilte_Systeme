@@ -71,7 +71,6 @@
           </execution>        
           
           <!-- Our game service configuration -->
-          
           <execution>
           <id>game_server</id>
             <goals>
@@ -86,6 +85,26 @@
               <archive>              
                 <manifest>
                   <mainClass>server/gameService.GameService</mainClass>
+                </manifest>                               
+              </archive>
+            </configuration>
+          </execution>   
+          
+                   <!-- Our bank service configuration -->
+          <execution>
+          <id>bank_server</id>
+            <goals>
+              <goal>attached</goal>
+            </goals>
+            <phase>package</phase>            
+            <configuration>            
+              <finalName>bankServer</finalName>              
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>              
+              <archive>              
+                <manifest>
+                  <mainClass>server/bankService.BankService</mainClass>
                 </manifest>                               
               </archive>
             </configuration>
