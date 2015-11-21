@@ -73,7 +73,7 @@ public class DataBase {
 	 * @param game - game object
 	 * Example: save("http://localhost:7777/db/save/", new Game())  
 	 */
-	public static void write(String url, Game game) {		
+	synchronized public static void write(String url, Game game) {		
 		Gson gson = new Gson();
 		String modifyUrl = url + gson.toJson(game);		
 		HttpRequest request = new HttpRequest(com.mashape.unirest.http.HttpMethod.POST, modifyUrl);
@@ -86,7 +86,7 @@ public class DataBase {
 	 * @param gameID - game id
 	 * @return
 	 */
-	public static String read(String url, String gameID) {
+	synchronized public static String read(String url, String gameID) {
 		HttpRequest request = new HttpRequest(com.mashape.unirest.http.HttpMethod.GET, url + gameID);		
 		HttpResponse<String> response = null;
 		

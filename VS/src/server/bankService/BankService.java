@@ -10,7 +10,6 @@ import config.DefaultConfiguration;
 import implementation.Account;
 import implementation.Bank;
 import implementation.Game;
-import implementation.GameController;
 import implementation.Player;
 import server.db.DataBase;
 
@@ -123,6 +122,61 @@ public class BankService {
 			return gson.toJson(playerMount);			
 		}) ;
 //========================================================================		
+	
+//========================================================================
+		/**
+		 * Geld von der Bank überwiesen werden kann mit
+		 * post /banks/{gameid}/transfer/to/{to}/{amount}
+		 */
+		post("/banks/:gameID//transfer/to/:to/:amount", (req, res) -> {
+			
+			// get user input value
+			String gameID = req.params("gameID");
+			String playerID = req.params("to");
+			int amount = Integer.parseInt(req.params("amount")); 
+			
+			// get game as gson from our db
+			String gameGson = DataBase.read(DefaultConfiguration.DB_URL_READ, gameID);
+			
+			// precondtion: checked if the game exist
+			if (gameGson == null) {
+				res.status(404);
+				return "Spiel existiert nicht!";
+			}
+									
+			// gson to game object
+			Game game = gson.fromJson(gameGson, Game.class);
+			
+			// precondtion: check if the player exist
+			if (game.getPlayerByID(playerID) == null) {
+				res.status(404);
+				return "Spieler mit dieser ID existiert nicht!";
+			}
+			
+			// get the bank to our game
+			Bank bank = game.getBank();
+			
+			// transfer money from bank to a player
+			boolean transferSuccess = game.transfer(bank, bank.getAccountBy(playerID), amount, "what ever?");
+			
+			if (transferSuccess) {
+				// save the modify game object in our db
+				DataBase.write(DefaultConfiguration.DB_URL_WRITE, game);
+				
+				// return result
+				res.status(200);
+				return game.getTransaction();
+			} else {
+				// return failed result
+				res.status(400);
+				return "transaction was not successful";
+			}
+		});
+//========================================================================		
+		
+		
+		
+		
 		
 	}
 }

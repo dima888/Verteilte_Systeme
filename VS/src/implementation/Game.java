@@ -31,6 +31,9 @@ public class Game implements GameComponent {
 	// the bank of our game
 	private Bank bank;
 	
+	// our transaction class
+	Transaction transaction = new Transaction();
+	
 	/**
 	 * Public constructor
 	 * Assigns a unique identifier for a object
@@ -41,6 +44,37 @@ public class Game implements GameComponent {
 		bank = new Bank(gameID);
 		gamesCounter++;
 		this.players = new ArrayList<>();
+	}
+	
+	/**
+	 * Method tranfer a amount from the bank, to our player account
+	 * @param bank - a bank object from a game
+	 * @param account - a player account
+	 * @param amount - transfer amount
+	 * @return boolean
+	 */
+	public boolean transfer(Bank bank, Account account, int amount, String reason) {
+		return transaction.transfer(bank, account, amount, reason);
+	}
+	
+	/**
+	 * Method transfer a mount from a account to a other account
+	 * @param accountFrom - sub money
+	 * @param accountTo - add money
+	 * @param amount - +- money value
+	 * @param reason - why you do why you do a transaction?
+	 * @return boolean 
+	 */
+	public boolean transfer(Account accountFrom, Account accountTo, int amount, String reason) {
+		return transfer(accountFrom, accountTo,amount, reason);
+	}
+	
+	/**
+	 * Method return the last transaction object
+	 * @return Transaction
+	 */
+	public Transaction getTransaction() {
+		return transaction;
 	}
 	
 	/**
