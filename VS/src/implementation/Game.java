@@ -53,8 +53,8 @@ public class Game implements GameComponent {
 	 * @param amount - transfer amount
 	 * @return boolean
 	 */
-	public boolean transfer(Bank bank, Account account, int amount, String reason) {
-		return transaction.transfer(bank, account, amount, reason);
+	public boolean transferPull(Bank bank, Account account, int amount, String reason) {
+		return transaction.transferPull(bank, account, amount, reason);
 	}
 	
 	/**

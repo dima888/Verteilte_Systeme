@@ -128,7 +128,7 @@ public class BankService {
 		 * Geld von der Bank überwiesen werden kann mit
 		 * post /banks/{gameid}/transfer/to/{to}/{amount}
 		 */
-		post("/banks/:gameID//transfer/to/:to/:amount", (req, res) -> {
+		post("/banks/:gameID/transfer/to/:to/:amount", (req, res) -> {
 			
 			// get user input value
 			String gameID = req.params("gameID");
@@ -157,7 +157,7 @@ public class BankService {
 			Bank bank = game.getBank();
 			
 			// transfer money from bank to a player
-			boolean transferSuccess = game.transfer(bank, bank.getAccountBy(playerID), amount, "what ever?");
+			boolean transferSuccess = game.transferPull(bank, bank.getAccountBy(playerID), amount, "what ever?");
 			
 			if (transferSuccess) {
 				// save the modify game object in our db

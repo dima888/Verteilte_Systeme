@@ -31,6 +31,21 @@ public class Bank implements GameComponent {
 	}
 	
 	/**
+	 * Set new bank amount
+	 * by successful setting of new amount, method return true, else false
+	 * @param accountAmount
+	 * @return boolean
+	 */
+	public boolean setBankAmount(int accountAmount) {
+		try {
+			this.accountAmount = accountAmount;
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	/**
 	 * Method returns the id to related game
 	 * @return String
 	 */

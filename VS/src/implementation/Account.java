@@ -38,4 +38,18 @@ public class Account implements GameComponent{
 		return saldo;
 	}
 	
+	/**
+	 * Method set a new saldo, by successful set return our method true, else false
+	 * @param saldo - 
+	 * @return boolean
+	 */
+	public boolean setSaldo(int saldo) {
+		try {
+			this.saldo = saldo;
+			return true;
+		} catch (Exception e) {
+			return false;
+		}		
+	}
+	
 }

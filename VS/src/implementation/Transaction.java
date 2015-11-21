@@ -13,16 +13,32 @@ public class Transaction {
 	
 	
 	/**
-	 * Method tranfer a amount from the bank, to our player account
+	 * Bank pull a amount from a player
 	 * @param bank - a bank object from a game
 	 * @param account - a player account
 	 * @param amount - transfer amount
 	 * @param reason - why you do a transaction?
 	 * @return boolean
 	 */
-	public boolean transfer(Bank bank, Account account, int amount, String reason) {
-		// TODO: 
-		return false;
+	public boolean transferPull(Bank bank, Account account, int amount, String reason) {
+		
+		int bankMoney = bank.getBankAmount();		
+		int playerMoney = account.getSaldo();
+		
+		// pull money from a player account
+		boolean successSetPlayerMoney = account.setSaldo(playerMoney - amount);
+		
+		// condition
+		if ( !successSetPlayerMoney ) {
+			return false;
+		}
+		
+		// push the money to our bank
+		boolean successSetBankMoney = bank.setBankAmount(bankMoney + amount);
+		if ( !successSetBankMoney ) {
+			return false;
+		}
+		return true;
 	}
 	
 	/**
