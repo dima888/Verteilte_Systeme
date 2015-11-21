@@ -174,8 +174,63 @@ public class BankService {
 		});
 //========================================================================		
 		
-		
-		
+//========================================================================		
+	/**
+	 * Geld von einem zu anderen Konto übertragen werden kann mit
+	 * post /banks/{gameid}/transfer/from/{from}/to/{to}/{amount}	
+	 */
+		post("/banks/:gameid/transfer/from/:from/to/:to/:amount", (req, res) -> {
+			
+			// get user input value
+			String gameID = req.params("gameID");
+			String playerIDTo = req.params("to");
+			String playerIDFrom = req.params("from");
+			int amount = Integer.parseInt(req.params("amount")); 
+			
+			// get game as gson from our db
+			String gameGson = DataBase.read(DefaultConfiguration.DB_URL_READ, gameID);
+			
+			// precondtion: checked if the game exist
+			if (gameGson == null) {
+				res.status(404);
+				return "Spiel existiert nicht!";
+			}
+									
+			// gson to game object
+			Game game = gson.fromJson(gameGson, Game.class);
+			
+			// precondtion: check if the player exist
+			if (game.getPlayerByID(playerIDFrom) == null) {
+				res.status(404);
+				return "Spieler from mit dieser ID existiert nicht!";
+			}
+			
+			// precondtion: check if the player exist
+			if (game.getPlayerByID(playerIDTo) == null) {
+				res.status(404);
+				return "Spieler to mit dieser ID existiert nicht!";
+			}
+			
+			// get the bank to our game
+			Bank bank = game.getBank();
+			
+			// transfer money from bank to a player
+			boolean transferSuccess = game.transfer(bank.getAccountBy(playerIDFrom), bank.getAccountBy(playerIDTo), amount, "transfer form to");			
+			
+			if (transferSuccess) {
+				// save the modify game object in our db
+				DataBase.write(DefaultConfiguration.DB_URL_WRITE, game);
+				
+				// return result
+				res.status(200);
+				return game.getTransaction();
+			} else {
+				// return failed result
+				res.status(400);
+				return "transaction was not successful";
+			}
+		});
+//========================================================================
 		
 		
 	}
