@@ -15,3 +15,6 @@ Datum: 				Zeit:				Person:				Gesamt:		Aufgabe:
 05.11.2015			2std.				Schäfer				6std.		Aufgabe 2 einlesen / docker / Maven
 17.11.2015			1std.				Schäfer				7std.		Aufgabe 2 Bank implementiert
 18.11.2015			1std.				Schäfer				8Std. 		Aufgabe 2 implement on Bank-Utily and BankService 		
+19.11.2015			3std.				Schäfer				11std.		Aufgabe 2 Refactoring, 	established new architectural
+20.11.2015			5std.				Schäfer				16std.		Aufgabe 2 Implemented our data-base for game objects (saving in gson format)
+21.11.2015			4std.				Schäfer				20std.		Aufgabe 2 Implemented Bank-services
