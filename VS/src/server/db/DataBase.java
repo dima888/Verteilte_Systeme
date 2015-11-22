@@ -122,7 +122,8 @@ public class DataBase {
 			String gameAsJson= req.params("game");
 			Game game = gson.fromJson(gameAsJson, Game.class);
 			
-			dataBase.save(game);					
+			dataBase.save(game);
+			System.out.println(dataBase.gameList);
 					
 			res.type(DefaultConfiguration.RESPONSE_TYPE_JSON);
 			res.status(201);
@@ -133,12 +134,16 @@ public class DataBase {
 		get("/db/read/:gameID", (req, res) -> {			
 			String gameID= req.params("gameID");			
 			Game game = dataBase.getGame(gameID);
-							
-			res.type(DefaultConfiguration.RESPONSE_TYPE_JSON);
-			res.status(200);
 			
+			System.out.println(dataBase.gameList);
 			
-			
+			if ( game == null ) {
+				res.status(404);
+			} else {
+				res.status(200);
+			}
+						
+			res.type(DefaultConfiguration.RESPONSE_TYPE_JSON);			
 			return gson.toJson(game);
 		});
 		

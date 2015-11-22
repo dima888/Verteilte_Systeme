@@ -157,7 +157,7 @@ public class BankService {
 			Bank bank = game.getBank();
 			
 			// transfer money from bank to a player
-			boolean transferSuccess = game.transferPull(bank, bank.getAccountBy(playerID), amount, "what ever?");
+			boolean transferSuccess = bank.transferPull(playerID, amount, "what ever?");
 			
 			if (transferSuccess) {
 				// save the modify game object in our db
@@ -165,7 +165,7 @@ public class BankService {
 				
 				// return result
 				res.status(200);
-				return game.getTransaction();
+				return gson.toJson(bank.getTransaction());
 			} else {
 				// return failed result
 				res.status(400);
@@ -215,7 +215,7 @@ public class BankService {
 			Bank bank = game.getBank();
 			
 			// transfer money from bank to a player
-			boolean transferSuccess = game.transfer(bank.getAccountBy(playerIDFrom), bank.getAccountBy(playerIDTo), amount, "transfer form to");			
+			boolean transferSuccess = bank.transfer(playerIDFrom, playerIDTo, amount, "transfer form to");			
 			
 			if (transferSuccess) {
 				// save the modify game object in our db
@@ -223,7 +223,7 @@ public class BankService {
 				
 				// return result
 				res.status(200);
-				return game.getTransaction();
+				return gson.toJson(bank.getTransaction());
 			} else {
 				// return failed result
 				res.status(400);

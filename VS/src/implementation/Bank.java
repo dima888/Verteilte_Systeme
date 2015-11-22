@@ -16,6 +16,9 @@ public class Bank implements GameComponent {
 	List<Account> playerAccountList = new ArrayList<Account>();
 	private int accountAmount = 1_000_000;
 	
+	// our transaction class
+	Transaction transaction = new Transaction();
+	
 	/**
 	 * FIXME: not defined in our UML
 	 * Constructor
@@ -28,6 +31,37 @@ public class Bank implements GameComponent {
 	
 	public int getBankAmount() {
 		return accountAmount;
+	}
+	
+	/**
+	 * Method return the last transaction object
+	 * @return Transaction
+	 */
+	public Transaction getTransaction() {
+		return transaction;
+	}
+	
+	/**
+	 * Method tranfer a amount from the bank, to our player account
+	 * @param bank - a bank object from a game
+	 * @param account - a player account
+	 * @param amount - transfer amount
+	 * @return boolean
+	 */
+	public boolean transferPull(String playerID, int amount, String reason) {
+		return transaction.transferPull(this, getAccountBy(playerID), amount, reason);
+	}
+	
+	/**
+	 * Method transfer a mount from a account to a other account
+	 * @param accountFrom - sub money
+	 * @param accountTo - add money
+	 * @param amount - +- money value
+	 * @param reason - why you do why you do a transaction?
+	 * @return boolean 
+	 */
+	public boolean transfer(String playerIDFrom, String playerIDTo, int amount, String reason) {
+		return transaction.transfer(getAccountBy(playerIDFrom), getAccountBy(playerIDTo), amount, reason);
 	}
 	
 	/**

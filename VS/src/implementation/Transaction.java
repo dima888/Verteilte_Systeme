@@ -35,6 +35,8 @@ public class Transaction {
 		
 		// push the money to our bank
 		boolean successSetBankMoney = bank.setBankAmount(bankMoney + amount);
+		
+		// condition
 		if ( !successSetBankMoney ) {
 			return false;
 		}

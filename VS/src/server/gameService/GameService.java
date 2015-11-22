@@ -27,7 +27,6 @@ public class GameService {
 			Game newGame = new Game();
 			
 			// add game object in our db
-			//GameController.addGame(newGame, "http://localhost:7777/db/save/" + gson.toJson(newGame));
 			DataBase.write(DefaultConfiguration.DB_URL_WRITE, newGame);
 			
 			return gson.toJson(newGame);
