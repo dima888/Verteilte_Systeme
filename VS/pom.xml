@@ -90,7 +90,7 @@
             </configuration>
           </execution>   
           
-                   <!-- Our bank service configuration -->
+          <!-- Our bank service configuration -->
           <execution>
           <id>bank_server</id>
             <goals>
@@ -108,7 +108,27 @@
                 </manifest>                               
               </archive>
             </configuration>
-          </execution>   
+          </execution>
+          
+          <!-- our database server configuration-->   
+          <execution>
+          <id>database_server</id>
+            <goals>
+              <goal>attached</goal>
+            </goals>
+            <phase>package</phase>            
+            <configuration>            
+              <finalName>databaseServer</finalName>              
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>              
+              <archive>              
+                <manifest>
+                  <mainClass>server/db.DataBase</mainClass>
+                </manifest>                               
+              </archive>
+            </configuration>
+          </execution>
            
         </executions>
       </plugin>

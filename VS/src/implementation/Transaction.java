@@ -7,10 +7,9 @@ package implementation;
  */
 public class Transaction {
 
-	private String from = "";
-	private String to = "";
-	private String reason = "";
-	
+	private String from = "undef";
+	private String to = "undef";
+	private String reason = "undef";
 	
 	/**
 	 * Bank pull a amount from a player
@@ -22,6 +21,7 @@ public class Transaction {
 	 */
 	public boolean transferPull(Bank bank, Account account, int amount, String reason) {
 		
+		// get money from bank and a account
 		int bankMoney = bank.getBankAmount();		
 		int playerMoney = account.getSaldo();
 		
@@ -40,6 +40,42 @@ public class Transaction {
 		if ( !successSetBankMoney ) {
 			return false;
 		}
+		
+		// set description
+		setProperties(account.getID(), "bank pull money from a player", reason);
+		return true;
+	}
+	
+	/**
+	 * Method push money from the bank to a player
+	 * @param playerID -  id from a player 
+	 * @param amount - tranfer amount
+	 * @param reason - what ever
+	 * @return boolean
+	 */
+	public boolean transferPush(Bank bank, Account account, int amount, String reason) {
+		// get money from bank and a account
+		int bankMoney = bank.getBankAmount();
+		int playerMoney = account.getSaldo();
+
+		// pull money from our bank
+		boolean successSetBankMoney = bank.setBankAmount(bankMoney - amount);
+
+		// condition
+		if (!successSetBankMoney) {
+			return false;
+		}
+
+		// push the money to our player
+		boolean successSetPlayerMoney = account.setSaldo(playerMoney + amount);
+
+		// condition
+		if (!successSetPlayerMoney) {
+			return false;
+		}
+
+		// set description
+		setProperties(account.getID(), "bank push money to a player", reason);
 		return true;
 	}
 	
@@ -52,14 +88,38 @@ public class Transaction {
 	 * @return boolean 
 	 */
 	public boolean transfer(Account accountFrom, Account accountTo, int amount, String reason) {
-		// TODO: 
-		return false;
+		
+		// get money from accounts
+		int moneyFromPlayer = accountFrom.getSaldo();
+		int moneyToPlayer = accountTo.getSaldo();
+		
+		// sub money from accountFrom
+		boolean successSub = accountFrom.setSaldo(moneyFromPlayer - amount);
+		
+		// condition
+		if ( !successSub ) {
+			return false;
+		}
+		
+		// add money to, accountTo
+		boolean successAdd = accountTo.setSaldo(moneyToPlayer + amount); 
+		
+		// condition
+		if ( !successAdd ) {
+			return false;
+		}
+		
+		// set description
+		setProperties(accountFrom.getID(), accountTo.getID(), reason);
+		return true;
 	}
 	
 	/**
 	 * Helper method for setting properties
 	 */
-	private void setProperties() {
-		// TODO: 
+	private void setProperties(String from, String to, String reason) {
+		this.from = from;
+		this.to = to;
+		this.reason = reason;
 	}
 }

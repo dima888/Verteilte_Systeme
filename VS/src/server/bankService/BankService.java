@@ -3,7 +3,7 @@ package server.bankService;
 import static spark.Spark.post;
 
 import static spark.Spark.get;
-
+//import static spark.Spark.port;
 import com.google.gson.Gson;
 
 import config.DefaultConfiguration;
@@ -12,9 +12,6 @@ import implementation.Bank;
 import implementation.Game;
 import implementation.Player;
 import server.db.DataBase;
-
-import static spark.Spark.*;
-
 /**
  * Our Bank service
  * @author foxhound
@@ -31,7 +28,7 @@ public class BankService {
 		Gson gson = new Gson();
 		
 		// delete this, is only for testing
-		port(4568);
+//		port(4568);
 		
 //========================================================================
 		/**
@@ -121,18 +118,70 @@ public class BankService {
 			// return result
 			return gson.toJson(playerMount);			
 		}) ;
-//========================================================================		
-	
+//========================================================================
+		
 //========================================================================
 		/**
-		 * Geld von der Bank überwiesen werden kann mit
-		 * post /banks/{gameid}/transfer/to/{to}/{amount}
+		 * Geld von der Bank überwiesen werden kann mit post
+		 * /banks/{gameid}/transfer/to/{to}/{amount}
 		 */
 		post("/banks/:gameID/transfer/to/:to/:amount", (req, res) -> {
-			
+
 			// get user input value
 			String gameID = req.params("gameID");
 			String playerID = req.params("to");
+			int amount = Integer.parseInt(req.params("amount"));
+
+			// get game as gson from our db
+			String gameGson = DataBase.read(DefaultConfiguration.DB_URL_READ, gameID);
+
+			// precondtion: checked if the game exist
+			if (gameGson == null) {
+				res.status(404);
+				return "Spiel existiert nicht!";
+			}
+
+			// gson to game object
+			Game game = gson.fromJson(gameGson, Game.class);
+
+			// precondtion: check if the player exist
+			if (game.getPlayerByID(playerID) == null) {
+				res.status(404);
+				return "Spieler mit dieser ID existiert nicht!";
+			}
+
+			// get the bank to our game
+			Bank bank = game.getBank();
+
+			// transfer money from bank to a player
+			boolean transferSuccess = bank.transferPush(playerID, amount, "what ever");
+
+			if (transferSuccess) {
+				// save the modify game object in our db
+				DataBase.write(DefaultConfiguration.DB_URL_WRITE, game);
+
+				// return result
+				res.status(200);
+				return gson.toJson(bank.getTransaction());
+			} else {
+				// return failed result
+				res.status(400);
+				return "transaction was not successful";
+			}
+		});
+//========================================================================	
+		
+	
+//========================================================================
+		/**
+		 * Geld eingezogen werden kann mit
+		 * post /banks/{gameid}/transfer/from/{from}/{amount}
+		 */
+		post("/banks/:gameID/transfer/from/:from/:amount", (req, res) -> {
+			
+			// get user input value
+			String gameID = req.params("gameID");
+			String playerID = req.params("from");
 			int amount = Integer.parseInt(req.params("amount")); 
 			
 			// get game as gson from our db
@@ -157,7 +206,7 @@ public class BankService {
 			Bank bank = game.getBank();
 			
 			// transfer money from bank to a player
-			boolean transferSuccess = bank.transferPull(playerID, amount, "what ever?");
+			boolean transferSuccess = bank.transferPull(playerID, amount, "what ever");
 			
 			if (transferSuccess) {
 				// save the modify game object in our db

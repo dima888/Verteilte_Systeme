@@ -1,0 +1,9 @@
+Start circle from our docker machines
+
+------------------------------------
+1. start the game docker machine ip: 192.168.99.100  
+2. start the bank docker machine ip: 192.168.99.101
+3. start the database docker machine ip: 192.168.99.102
+4. start the dice docker machine ip: 192.168.99.103
+5. start the dice2 docker machine ip: 192.168.99.104
+------------------------------------

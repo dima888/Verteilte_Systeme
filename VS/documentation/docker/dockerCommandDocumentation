@@ -1,5 +1,8 @@
 // create new virtual machine
-docker-machine create --driver virtualbox nameOfYourMachine 
+docker-machine create --driver virtualbox nameOfYourMachine
+
+// with explicit ip and without driver
+docker-machine create --url=tcp://50.134.234.20:2376 nameOfYourMachine 
 
 // show all machines
 docker-machine ls

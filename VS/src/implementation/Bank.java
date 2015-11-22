@@ -20,7 +20,6 @@ public class Bank implements GameComponent {
 	Transaction transaction = new Transaction();
 	
 	/**
-	 * FIXME: not defined in our UML
 	 * Constructor
 	 * Set a association with our game
 	 * @param gameID - a game id
@@ -46,10 +45,22 @@ public class Bank implements GameComponent {
 	 * @param bank - a bank object from a game
 	 * @param account - a player account
 	 * @param amount - transfer amount
+	 * @param reason - what ever
 	 * @return boolean
 	 */
 	public boolean transferPull(String playerID, int amount, String reason) {
 		return transaction.transferPull(this, getAccountBy(playerID), amount, reason);
+	}
+	
+	/**
+	 * Method push money from the bank to a player
+	 * @param playerID -  id from a player 
+	 * @param amount - tranfer amount
+	 * @param reason - what ever
+	 * @return boolean
+	 */
+	public boolean transferPush(String playerID, int amount, String reason) {
+		return transaction.transferPush(this, getAccountBy(playerID), amount, reason);
 	}
 	
 	/**

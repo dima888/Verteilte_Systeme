@@ -6,12 +6,9 @@ import static spark.SparkBase.port;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 import com.google.gson.Gson;
 import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.HttpRequest;
 
 import config.DefaultConfiguration;
@@ -25,7 +22,6 @@ import implementation.Game;
 public class DataBase {
 	
 	public List<Game> gameList = new ArrayList<Game>();
-	
 	
 	/**
 	 * save game
@@ -65,7 +61,6 @@ public class DataBase {
 	public boolean delete(Game game) {
 		return gameList.remove(game);
 	}
-	
 	
 	/**
 	 * Method send a object in json to our db
@@ -110,10 +105,11 @@ public class DataBase {
 	 */
 	public static void main(String[] args) {
 
+		port(7777);
+		
 		// create db object
 		DataBase dataBase = new DataBase();		
-		
-		port(7777);		
+				
 		Gson gson = new Gson();
 				
 		// db write service
@@ -123,7 +119,6 @@ public class DataBase {
 			Game game = gson.fromJson(gameAsJson, Game.class);
 			
 			dataBase.save(game);
-			System.out.println(dataBase.gameList);
 					
 			res.type(DefaultConfiguration.RESPONSE_TYPE_JSON);
 			res.status(201);
@@ -135,8 +130,6 @@ public class DataBase {
 			String gameID= req.params("gameID");			
 			Game game = dataBase.getGame(gameID);
 			
-			System.out.println(dataBase.gameList);
-			
 			if ( game == null ) {
 				res.status(404);
 			} else {
@@ -145,7 +138,6 @@ public class DataBase {
 						
 			res.type(DefaultConfiguration.RESPONSE_TYPE_JSON);			
 			return gson.toJson(game);
-		});
-		
+		});	
 	}
 }

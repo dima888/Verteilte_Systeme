@@ -11,7 +11,7 @@ import interfaces.GameComponent;
 public class Account implements GameComponent{
 
 	private String playerID = "";
-	private int saldo = 0;
+	private int saldo = 4000;
 	
 	/**
 	 * Constructor
